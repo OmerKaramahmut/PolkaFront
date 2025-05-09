@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+.card-textt p {
+    font-family: "Lora", serif;
+    font-size: 0.9rem;
+    /* Varsayılan yazı boyutu küçültüldü */
+}
+
+@media screen and (max-width: 1024px) {
+    .cardContainerResponsive {
+        display: flex;
+        margin: 0 auto;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .cardContainerResponsive {
+        width: 120px !important;
+        /* Mobilde genişlik daha da küçültüldü */
+        height: 100px !important;
+        /* Mobilde yükseklik daha da küçültüldü */
+    }
+
+    .card-textt p {
+        font-size: 0.8rem;
+        /* Tablet cihazlar için yazı boyutu küçültüldü */
+    }
+
+    .card-button {
+        margin-top: 5px !important;
+        /* Butonu biraz daha yukarı taşı */
+    }
+}
+
+@media (max-width: 576px) {
+    .cardContainerResponsive {
+        width: 250px !important;
+        /* Daha küçük ekranlar için genişlik küçültüldü */
+        height: 250px !important;
+        /* Daha küçük ekranlar için yükseklik küçültüldü */
+    }
+
+    .card-textt p {
+        font-size: 0.7rem;
+   
+    }
+
+    .btn {
+       top: 180px;
+    left: 40px!important;
+        /* Butonu daha yukarı taşı */
+    }
+
+    .responsive-container {
+        height: 500px;
+    }
+
+    .card-textt {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+}

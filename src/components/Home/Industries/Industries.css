@@ -1,0 +1,9 @@
+/* Mobil cihazlar için medya sorgusu */
+@media (max-width: 768px) {
+    .card {
+      display: block !important; /* Flex özelliğini kaldır ve blok düzenine geçir */
+      width: 100%; /* Kart genişliğini tam yap */
+      margin: 10px auto; /* Kartları ortala */
+      text-align: center; /* Metni ortala */
+    }
+  }

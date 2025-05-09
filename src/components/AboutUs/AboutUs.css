@@ -1,0 +1,5 @@
+.social-icon:hover  {
+    color: white !important;  /* İkon rengi beyaz olacak */
+    transition: color 0.3s ease !important; /* Geçiş animasyonu */
+    cursor: pointer !important; /* İmleç el şeklinde olacak */
+  }

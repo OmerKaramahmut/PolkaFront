@@ -1,0 +1,27 @@
+@media screen and (max-width: 768px) {
+    .footer-menu {
+        align-items: center!important;
+        justify-content: center!important;
+        display: flex!important;
+    }
+}
+
+
+/* Varsayılan düzen */
+.footer-icons {
+    display: flex;
+  }
+  
+  /* Mobil cihazlar için medya sorgusu */
+  @media (max-width: 768px) {
+    .footer-icons {
+      justify-content: center; /* İkonları yatayda ortala */
+      align-items: center; /* İkonları dikeyde ortala */
+      width: 100%; /* Genişliği tam yap */
+    }
+  
+    .footer-menu .row {
+      flex-direction: column; /* Satırları dikey hizala */
+      align-items: center; /* Tüm içeriği ortala */
+    }
+  }

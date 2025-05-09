@@ -1,0 +1,7 @@
+@media (max-width: 768px) {
+    .cardContainerResponsive {
+      width: 300px; /* Mobilde genişlik küçültüldü */
+      height: 250px; /* Mobilde yükseklik küçültüldü */
+    }
+  }
+  

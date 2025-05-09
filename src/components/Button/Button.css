@@ -1,0 +1,36 @@
+.productBtn {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    /* Butonun her zaman üstte olmasını sağlar */
+}
+
+.productBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    /* Karartma efekti için renk */
+    opacity: 0;
+    /* Varsayılan olarak görünmez */
+    transition: opacity 0.3s ease;
+    /* Geçiş animasyonu */
+    z-index: -1;
+    /* Yazının altında kalır */
+    border-radius: 5px;
+}
+
+.productBtn:hover::before {
+    opacity: 0.2;
+    /* Hover durumunda arka plan soluklaşır */
+}
+
+
+
+.productBtn:hover .btnArrow {
+    transform: translateX(8px);
+    transition: transform 0.2s ease;
+}

@@ -1,0 +1,80 @@
+.card-hover {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 550px;
+    /* Kart yüksekliğini artırdık */
+}
+
+.card-hover:hover {
+    transform: scale(1.05);
+    /* Kartı büyüt */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    /* Gölgelendirme ekle */
+}
+
+.card-img {
+    transition: transform 0.3s ease;
+    height: 100%;
+    /* Resim kartın tamamını kaplar */
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-hover:hover .card-img {
+    transform: scale(1.1);
+    /* Resmi biraz büyüt */
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0; /* Yazıları kartın altına hizala */
+    left: 0; /* Sol kenardan başlat */
+    width: 100%; /* Alt kısmın tamamını kapla */
+    height: auto; /* İçeriğe göre yükseklik */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Yazıları alta hizala */
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7); /* Koyu arka plan */
+    color: white; /* Yazı rengi */
+    opacity: 0; /* Başlangıçta görünmez */
+    transition: opacity 0.5s ease;
+}
+
+.card-hover:hover .card-overlay {
+    opacity: 1; /* Hover durumunda görünür */
+}
+
+.card-title {
+    position: relative;
+    transform: translateX(-100%);
+    /* Soldan başlar */
+    transition: transform 0.5s ease;
+    font-size: 1.5rem;
+    /* Başlık boyutu */
+    color: white;
+    margin-bottom: 10px; /* Açıklama ile araya boşluk ekle */
+}
+
+.card-hover:hover .card-title {
+    transform: translateX(0);
+    /* Soldan gelir */
+}
+
+.card-text {
+    position: relative;
+    transform: translateY(100%);
+    /* Aşağıdan başlar */
+    transition: transform 0.5s ease;
+    font-size: 1rem;
+    /* Açıklama boyutu */
+    color: white;
+}
+
+.card-hover:hover .card-text {
+    transform: translateY(0);
+    /* Aşağıdan gelir */
+}

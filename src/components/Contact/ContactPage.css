@@ -1,0 +1,94 @@
+/* Mobil cihazlar için medya sorgusu */
+@media (max-width: 768px) {
+  form {
+    width: 100% !important;
+    /* Form genişliğini tam yap */
+    margin: 0 auto !important;
+    /* Ortalamak için margin ayarla */
+  }
+
+  .col-xl-6 {
+    width: 100% !important;
+    /* Kolon genişliğini tam yap */
+  }
+}
+
+.contactPage {
+  background-color: #061c1d;
+  /* Üst bölüm için arka plan rengi */
+  height: 100vh;
+}
+
+#contactAbs {
+  transform: translateY(-40%);
+  background-color: #e5e6db;
+  border-radius: 10px;
+}
+
+.contactforms {
+  background-color: #e5e6db;
+  border-radius: 10px;
+
+}
+
+form {
+  margin: 0 !important;
+  /* Formun marginini sıfırla */
+}
+
+/* Varsayılan düzen */
+.contact-box {
+  width: 600px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 10px;
+  /* Köşeleri yuvarlat */
+  transition: transform 0.5s ease, background-color 0.5s ease;
+  /* Geçiş animasyonu */
+}
+
+/* Dinamik arka plan renkleri */
+.contact-box:nth-child(odd) {
+  background-color: #f0f8ff;
+  /* Açık mavi */
+  transform: translateY(350%);
+  position: absolute;
+}
+
+.contact-box:nth-child(even) {
+  background-color: #ffe4e1;
+  /* Açık pembe */
+}
+
+/* Hover efekti */
+.contact-box:hover {
+  transform: translateY(-10px);
+  /* Hover sırasında yukarı hareket */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Gölge efekti */
+}
+
+.rImg img {
+  width: 550px;
+}
+
+.map-container iframe{
+border-radius: 25px;
+
+}
+
+@media screen and (max-width: 1024px) {
+
+  .rImg img {
+    width: 350px;
+  }
+  .map-container iframe{
+    width: 100%;
+  
+  }
+
+}

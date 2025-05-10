@@ -5,34 +5,36 @@ import axios from 'axios';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
-const ParallaxSection = () => {
-    const containerRef = useRef(null); 
-    const imageRef = useRef(null); 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+const ParallaxSection = () => {
+    const containerRef = useRef(null);
+    const imageRef = useRef(null);
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-              
                 const res = await axios.get(`${API_BASE_URL}/parallax-img?populate=parallaxImage`);
+                const imagePath = res.data?.data?.attributes?.parallaxImage?.data?.attributes?.url;
 
-              
-                const imagePath = res.data.data.parallaxImage.url;
-                setImageUrl(`${API_BASE_URL}${imagePath}`);
+                if (imagePath) {
+                    setImageUrl(`${BASE_URL}${imagePath}`);
+                } else {
+                    console.error("Resim yolu bulunamadı.");
+                }
             } catch (error) {
                 console.error("Resim alınamadı:", error);
             }
         };
 
         fetchImage();
-    }, []); 
+    }, []);
 
-    // imageUrl yüklendiğinde, animasyonu başlatmak için yeni useEffect
     useEffect(() => {
         if (imageUrl) {
-            // GSAP animasyonu
             gsap.fromTo(
                 imageRef.current,
                 { y: "-0%" },
@@ -48,7 +50,7 @@ const ParallaxSection = () => {
                 }
             );
         }
-    }, [imageUrl]); // imageUrl değiştiğinde çalışacak
+    }, [imageUrl]);
 
     if (!imageUrl) return <div>Yükleniyor...</div>;
 
@@ -56,7 +58,7 @@ const ParallaxSection = () => {
         <div
             ref={containerRef}
             style={{
-                height: "350px", // Daha büyük yükseklik, scroll etkisi için
+                height: "350px",
                 position: "relative",
                 overflow: "hidden",
             }}
@@ -74,7 +76,6 @@ const ParallaxSection = () => {
                 }}
             />
         </div>
-
     );
 };
 

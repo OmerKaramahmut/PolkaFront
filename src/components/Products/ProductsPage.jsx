@@ -5,7 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import ProductsText from './ProductsText';
 import './Tabs.css';
 
-// API ve BASE URL tanımlamaları
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -17,7 +17,6 @@ const Products = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const { locale } = useLanguage();
 
-    // Navbar yapısındaki gibi veri çekme ve işleme
     useEffect(() => {
         const fetchCategoriesAndProducts = async () => {
             try {
@@ -26,19 +25,11 @@ const Products = () => {
                     axios.get(`${API_BASE_URL}/products?populate=*&locale=${locale}`),
                 ]);
 
-                const categoryData = categoryRes.data.data || [];
+                setCategories(categoryRes.data.data || []);
+                setProducts(productRes.data.data || []);
 
-                const productData = (productRes.data.data || []).map((product) => {
-                    const url = product.image?.url;
-                    const imageUrl = url ? `${BASE_URL}${url}` : "";
-                    return { ...product, imageUrl };
-                });
-
-                setCategories(categoryData);
-                setProducts(productData);
-
-                if (categoryData.length > 0) {
-                    setActiveKey(categoryData[0].slug);
+                if ((categoryRes.data.data || []).length > 0) {
+                    setActiveKey(categoryRes.data.data[0].slug);
                 }
             } catch (err) {
                 console.error("Veriler alınamadı:", err);
@@ -85,37 +76,40 @@ const Products = () => {
                                         product.category &&
                                         product.category.slug === category.slug
                                 )
-                                .map((product) => (
-                                    <div className="col-md-4 mb-4" key={product.id}>
-                                        <Card
-                                            className="h-100 shadow-sm border-0 rounded-4 product-card"
-                                            onClick={() => setSelectedProduct(product)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            {product.imageUrl && (
-                                                <Card.Img
-                                                    variant="top"
-                                                    src={product.imageUrl}
-                                                    alt={product.title}
-                                                    style={{
-                                                        height: '220px',
-                                                        objectFit: 'cover',
-                                                        borderTopLeftRadius: '1rem',
-                                                        borderTopRightRadius: '1rem',
-                                                    }}
-                                                />
-                                            )}
-                                            <Card.Body className="p-4">
-                                                <Card.Title className="text-primary fw-semibold fs-5">
-                                                    {product.title}
-                                                </Card.Title>
-                                                <Card.Text className="text-muted">
-                                                    {product.description}
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                ))}
+                                .map((product) => {
+                                    const imageUrl = product.image?.url ? `${BASE_URL}${product.image.url}` : "";
+                                    return (
+                                        <div className="col-md-4 mb-4" key={product.id}>
+                                            <Card
+                                                className="h-100 shadow-sm border-0 rounded-4 product-card"
+                                                onClick={() => setSelectedProduct(product)}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                {imageUrl && (
+                                                    <Card.Img
+                                                        variant="top"
+                                                        src={imageUrl}
+                                                        alt={product.title}
+                                                        style={{
+                                                            height: '220px',
+                                                            objectFit: 'cover',
+                                                            borderTopLeftRadius: '1rem',
+                                                            borderTopRightRadius: '1rem',
+                                                        }}
+                                                    />
+                                                )}
+                                                <Card.Body className="p-4">
+                                                    <Card.Title className="text-primary fw-semibold fs-5">
+                                                        {product.title}
+                                                    </Card.Title>
+                                                    <Card.Text className="text-muted">
+                                                        {product.description}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </div>
+                                    );
+                                })}
                         </div>
                     </Tab>
                 ))}
@@ -132,9 +126,9 @@ const Products = () => {
                     <Modal.Title>{selectedProduct?.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ textAlign: 'center' }}>
-                    {selectedProduct?.imageUrl && (
+                    {selectedProduct?.image?.url && (
                         <img
-                            src={selectedProduct.imageUrl}
+                            src={`${BASE_URL}${selectedProduct.image.url}`}
                             alt={selectedProduct.title}
                             className="img-fluid rounded mb-3"
                         />

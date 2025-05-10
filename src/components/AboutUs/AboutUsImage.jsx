@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
 
-
-
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const AboutUsImage = () => {
-    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                // Strapi'den görsel verisini almak için doğru API çağrısı
-                const res = await fetch(`${API_BASE_URL}/about-img?populate=*`); // about-img API endpoint'i
+                const res = await fetch(`${API_BASE_URL}/about-img?populate=*`);
                 const data = await res.json();
 
-                // Eğer API'den gelen veri doğruysa img.url'yi alıyoruz
-                if (data.data) {
-                    const imageUrl = data.data.img?.url;  // img.url doğrudan alınır
-                    setImage(imageUrl ? `${API_BASE_URL}${imageUrl}` : null); // URL'yi doğru şekilde ekliyoruz
-                    console.log(data.data.img?.url);
+                const url = data?.data?.attributes?.img?.data?.attributes?.url;
 
+                if (url) {
+                    setImageUrl(`${BASE_URL}${url}`);
+                } else {
+                    console.error("Resim yolu bulunamadı.");
                 }
-                console.log(data);  // Veriyi kontrol etmek için
+
             } catch (error) {
                 console.error("Görsel verisi alınamadı:", error);
             }
         };
 
         fetchImage();
-    }, []); // Bağımlılıklar boş olduğu için sadece component mount olduğunda çalışır
+    }, []);
 
     return (
         <div
@@ -36,9 +36,9 @@ const AboutUsImage = () => {
                 width: '80%',
                 height: '400px',
                 borderRadius: '10px',
-                backgroundImage: image ? `url(${image})` : '', // image varsa URL'yi ekle
-                backgroundSize: 'cover', // Resmi düzgün şekilde sığdır
-                backgroundPosition: 'center', // Resmin ortalanmasını sağla
+                backgroundImage: imageUrl ? `url(${imageUrl})` : '',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
             }}
         ></div>
     );

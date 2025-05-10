@@ -3,24 +3,22 @@ import axios from 'axios';
 import { Tabs, Tab, Card, Spinner, Container, Modal } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import ProductsText from './ProductsText';
-import './Tabs.css'; // CSS dosyasını içe aktar
-
-
+import './Tabs.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Products = () => {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [activeKey, setActiveKey] = useState('');
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const { locale } = useLanguage(); // Locale bilgisini alıyoruz (Türkçe veya İngilizce)
+    const { locale } = useLanguage();
 
     useEffect(() => {
         const fetchCategoriesAndProducts = async () => {
             try {
                 const [categoryRes, productRes] = await Promise.all([
-                    // Dil parametresi ile API'den kategori ve ürünleri alıyoruz
                     axios.get(`${API_BASE_URL}/categories?locale=${locale}`),
                     axios.get(`${API_BASE_URL}/products?populate=*&locale=${locale}`),
                 ]);
@@ -42,7 +40,7 @@ const Products = () => {
         };
 
         fetchCategoriesAndProducts();
-    }, [locale]); // Locale değiştiğinde yeniden veri çek
+    }, [locale]);
 
     if (loading) {
         return (
@@ -66,7 +64,12 @@ const Products = () => {
                 style={{ border: "none", textTransform: "uppercase" }}
             >
                 {categories.map((category) => (
-                    <Tab style={{ textTransform: "uppercase" }} eventKey={category.slug} title={category.name} key={category.id}>
+                    <Tab
+                        style={{ textTransform: "uppercase" }}
+                        eventKey={category.slug}
+                        title={category.name}
+                        key={category.id}
+                    >
                         <div className="row fade-in">
                             {products
                                 .filter(
@@ -84,7 +87,7 @@ const Products = () => {
                                             {product.image?.url && (
                                                 <Card.Img
                                                     variant="top"
-                                                    src={`${API_BASE_URL}${typeof product.image === 'string' ? product.image : product.image.url || ''}`}
+                                                    src={`${API_BASE_URL}${product.image?.url}`}
                                                     alt={product.title}
                                                     style={{
                                                         height: '220px',
@@ -118,13 +121,15 @@ const Products = () => {
                 backdropClassName="blur-backdrop"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >{selectedProduct?.title}</Modal.Title>
+                    <Modal.Title style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {selectedProduct?.title}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ textAlign: 'center', display: 'flex', alignItems: 'center', width: '100%', flexDirection: 'column' }}>
                     {selectedProduct?.image?.url && (
                         <img
-                            src={`${API_BASE_URL}${selectedProduct.image.url}`}
-                            alt={selectedProduct.title}
+                            src={`${API_BASE_URL}${selectedProduct?.image?.url}`}
+                            alt={selectedProduct?.title}
                             className="img-fluid rounded mb-3"
                         />
                     )}

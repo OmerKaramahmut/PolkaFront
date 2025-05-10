@@ -5,6 +5,11 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["localhost", "127.0.0.1"],
+    allowedHosts: [
+      "localhost",
+      "127.0.0.1",
+      "api.polkachemicals.com",
+      "polkachemicals.com",
+    ],
   },
 });

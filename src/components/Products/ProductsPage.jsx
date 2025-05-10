@@ -5,7 +5,9 @@ import { useLanguage } from '../../context/LanguageContext';
 import ProductsText from './ProductsText';
 import './Tabs.css';
 
+// API ve BASE URL tanımlamaları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Products = () => {
     const [categories, setCategories] = useState([]);
@@ -15,6 +17,7 @@ const Products = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const { locale } = useLanguage();
 
+    // Navbar yapısındaki gibi veri çekme ve işleme
     useEffect(() => {
         const fetchCategoriesAndProducts = async () => {
             try {
@@ -24,7 +27,12 @@ const Products = () => {
                 ]);
 
                 const categoryData = categoryRes.data.data || [];
-                const productData = productRes.data.data || [];
+
+                const productData = (productRes.data.data || []).map((product) => {
+                    const url = product.image?.url;
+                    const imageUrl = url ? `${BASE_URL}${url}` : "";
+                    return { ...product, imageUrl };
+                });
 
                 setCategories(categoryData);
                 setProducts(productData);
@@ -84,10 +92,10 @@ const Products = () => {
                                             onClick={() => setSelectedProduct(product)}
                                             style={{ cursor: 'pointer' }}
                                         >
-                                            {product.image?.url && (
+                                            {product.imageUrl && (
                                                 <Card.Img
                                                     variant="top"
-                                                    src={`${API_BASE_URL}${product.image?.url}`}
+                                                    src={product.imageUrl}
                                                     alt={product.title}
                                                     style={{
                                                         height: '220px',
@@ -98,7 +106,7 @@ const Products = () => {
                                                 />
                                             )}
                                             <Card.Body className="p-4">
-                                                <Card.Title style={{ transform: "translateX(0%)" }} className="text-primary fw-semibold fs-5">
+                                                <Card.Title className="text-primary fw-semibold fs-5">
                                                     {product.title}
                                                 </Card.Title>
                                                 <Card.Text className="text-muted">
@@ -121,15 +129,13 @@ const Products = () => {
                 backdropClassName="blur-backdrop"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        {selectedProduct?.title}
-                    </Modal.Title>
+                    <Modal.Title>{selectedProduct?.title}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ textAlign: 'center', display: 'flex', alignItems: 'center', width: '100%', flexDirection: 'column' }}>
-                    {selectedProduct?.image?.url && (
+                <Modal.Body style={{ textAlign: 'center' }}>
+                    {selectedProduct?.imageUrl && (
                         <img
-                            src={`${API_BASE_URL}${selectedProduct?.image?.url}`}
-                            alt={selectedProduct?.title}
+                            src={selectedProduct.imageUrl}
+                            alt={selectedProduct.title}
                             className="img-fluid rounded mb-3"
                         />
                     )}

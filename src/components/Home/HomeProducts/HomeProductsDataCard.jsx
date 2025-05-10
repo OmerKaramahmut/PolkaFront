@@ -1,33 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import 'aos/dist/aos.css'; // AOS CSS dosyasını dahil edin
-import AOS from 'aos'; // AOS kütüphanesini içe aktarın
+import 'aos/dist/aos.css';
+import AOS from 'aos';
 import axios from 'axios';
-import { useLanguage } from '../../../context/LanguageContext'; // Dil bağlamını içe aktar
+import { useLanguage } from '../../../context/LanguageContext';
 
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const HomeProductsDataCard = () => {
   const [cards, setCards] = useState([]);
-  const { locale } = useLanguage(); // Kullanıcının seçtiği dil
+  const { locale } = useLanguage();
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/home-products-cards?populate=*&locale=${locale}`)
-      .then(res => {
-        const formattedCards = res.data.data.map(item => ({
-          id: item.id,
-          title: item.Title, // Başlık
-          text: item.Text, // Açıklama
-          image: `${API_BASE_URL}${item.Image?.url || ''}`, // Resim
-        }));
+    const fetchCards = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/home-products-cards?populate=*&locale=${locale}`);
+        const formattedCards = res.data.data.map(item => {
+          const url = item.Image?.url;
+          const imageUrl = url ? `${BASE_URL}${url}` : "";
+          return {
+            id: item.id,
+            title: item.Title,
+            text: item.Text,
+            imageUrl,
+          };
+        });
         setCards(formattedCards);
-      })
-      .catch(err => console.error('Strapi veri çekme hatası:', err));
-  }, [locale]); // Dil değiştikçe veri çek
+      } catch (err) {
+        console.error('Strapi veri çekme hatası:', err);
+      }
+    };
+
+    fetchCards();
+  }, [locale]);
 
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animasyon süresi (ms)
-      easing: 'ease-out', // Animasyonun akıcılığı
-      once: false, // Her scroll down'da animasyonu tekrar oynat
+      duration: 1000,
+      easing: 'ease-out',
+      once: false,
     });
   }, []);
 
@@ -41,14 +53,16 @@ const HomeProductsDataCard = () => {
         <div
           className="d-flex justify-content-center col-12 col-md-6 col-lg-4 col-xl-3"
           key={card.id}
-          data-aos="fade-up" // AOS animasyonu
-          data-aos-delay={index * 100} // Her kart için gecikme
-          data-aos-offset="200" // Animasyonun tetiklenme mesafesi
+          data-aos="fade-up"
+          data-aos-delay={index * 100}
+          data-aos-offset="200"
         >
           <div className="cardBrand">
             <div className="contentBrand">
               <div className="imgBx">
-                <img className="img-fluid" src={card.image} alt={card.title} />
+                {card.imageUrl && (
+                  <img className="img-fluid" src={card.imageUrl} alt={card.title} />
+                )}
               </div>
               <div className="contentBx">
                 <h3 className="fw-bold" style={{ color: "#7eb0da" }}>{card.title}</h3>

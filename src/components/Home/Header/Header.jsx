@@ -1,29 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from '../../Button/Button';
-import { useLanguage } from '../../../context/LanguageContext'; // Dil bağlamını içe aktar
+import { useLanguage } from '../../../context/LanguageContext';
 
-
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Slider = () => {
-  const { locale } = useLanguage(); // Kullanıcının seçtiği dil
+  const { locale } = useLanguage();
   const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/sliders?populate=*&locale=${locale}`)
-      .then(res => {
-        const formattedSlides = res.data.data.map(item => ({
-          title: item.Tittle,
-          content: item.Content,
-          image: `${API_BASE_URL}${item.Image || ''}`,
+    const fetchSlides = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/sliders?populate=*&locale=${locale}`);
+        const formattedSlides = res.data.data.map(item => {
+          const url = item.Image?.url;
+          const imageUrl = url ? `${BASE_URL}${url}` : "";
 
-        }));
+          return {
+            title: item.Tittle,
+            content: item.Content,
+            imageUrl,
+          };
+        });
+
         setSlides(formattedSlides);
-      })
-      .catch(err => console.error('Strapi veri çekme hatası:', err));
-  }, [locale]); // Dil değiştikçe veri çek
+      } catch (err) {
+        console.error('Strapi veri çekme hatası:', err);
+      }
+    };
+
+    fetchSlides();
+  }, [locale]);
 
   useEffect(() => {
     if (slides.length === 0) return;
@@ -49,7 +60,7 @@ const Slider = () => {
           key={index}
           className={`position-absolute top-0 start-0 w-100 h-100 transition-opacity ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
           style={{
-            backgroundImage: `url(${slide.image})`,
+            backgroundImage: `url(${slide.imageUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             transition: 'opacity 1s ease-in-out, transform 5s ease-in-out',

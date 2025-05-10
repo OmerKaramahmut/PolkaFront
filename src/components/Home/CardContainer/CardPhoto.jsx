@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import axios from 'axios';
 
+// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const CardPhoto = () => {
     const cardRef = useRef(null);
     const [card, setCard] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [imageUrl, setImageUrl] = useState("");
 
     useEffect(() => {
         // GSAP animasyonu
@@ -28,14 +31,21 @@ const CardPhoto = () => {
         async function fetchData() {
             try {
                 const result = await axios.get(`${API_BASE_URL}/container-imgs?populate=*`);
-                console.log(result.data);
-                setCard(result.data.data[0]);
+                const data = result.data.data[0];
+
+                if (data?.attributes?.Image?.data?.attributes?.url) {
+                    const url = data.attributes.Image.data.attributes.url;
+                    setImageUrl(`${BASE_URL}${url}`);
+                }
+
+                setCard(data);
                 setLoading(false);
             } catch (error) {
                 setError(error);
                 setLoading(false);
             }
         }
+
         fetchData();
     }, []);
 
@@ -51,10 +61,6 @@ const CardPhoto = () => {
         return <p>Veri yüklenemedi.</p>;
     }
 
-    // Resim URL'sini oluştur
-    const imageUrl = `${API_BASE_URL}${card?.Image || ''}`;
-
-
     return (
         <div>
             <div
@@ -62,7 +68,13 @@ const CardPhoto = () => {
                 style={{ width: "500px", height: "400px" }}
                 className="card bg-black cardContainerResponsive"
             >
-                <img style={{ width: "100%", overflow: "hidden" }} src={imageUrl} alt="Container Image" />
+                {imageUrl && (
+                    <img
+                        style={{ width: "100%", overflow: "hidden" }}
+                        src={imageUrl}
+                        alt="Container Image"
+                    />
+                )}
             </div>
         </div>
     );

@@ -17,7 +17,7 @@ const CertificateDataCard = () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/certificates?populate=*&locale=${locale}`);
         const formattedCertificates = res.data.data.map(item => {
-          const url = item.CertificateImg?.url;
+          const url = item.CerfiticateImg?.data?.url || item.CerfiticateImg?.url;
           const imageUrl = url ? `${BASE_URL}${url}` : "";
           return {
             id: item.id,

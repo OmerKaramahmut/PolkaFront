@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -10,10 +9,9 @@ const AboutUsImage = () => {
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const res = await fetch(`${API_BASE_URL}/about-img?populate=*`);
+                const res = await fetch(`${API_BASE_URL}/about-img?populate=img`);
                 const data = await res.json();
-
-                const url = data?.data?.attributes?.img?.data?.attributes?.url;
+                const url = data?.data?.img?.url;
 
                 if (url) {
                     setImageUrl(`${BASE_URL}${url}`);

@@ -10,7 +10,7 @@ const CardPhoto = () => {
   useEffect(() => {
     const fetchCardImage = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/container-imgs?populate=image`);
+        const res = await axios.get(`${API_BASE_URL}/container-imgs?populate=Image`);
         const url = res.data?.data[0]?.Image?.url;
         if (url) {
           setCardUrl(`${BASE_URL}${url}`);

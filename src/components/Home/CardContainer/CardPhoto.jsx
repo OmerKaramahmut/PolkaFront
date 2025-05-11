@@ -11,7 +11,7 @@ const CardPhoto = () => {
     const fetchCardImage = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/container-imgs?populate=*`);
-        const url = res.data.data[0]?.Image?.url;  // attribute kullanılmadan
+        const url = res.data?.data?.Image?.url;  // NavbarLogo'daki gibi yapı
         if (url) {
           setCardUrl(`${BASE_URL}${url}`);
         }

@@ -10,8 +10,8 @@ const CardPhoto = () => {
   useEffect(() => {
     const fetchCardImage = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/container-imgs?populate=*`);
-        const url = res.data?.data?.Image?.url;  // NavbarLogo'daki gibi yapı
+        const res = await axios.get(`${API_BASE_URL}/container-img?populate=image`);
+        const url = res.data?.data?.image?.url;  // NavbarLogo'daki gibi yapı
         if (url) {
           setCardUrl(`${BASE_URL}${url}`);
         }

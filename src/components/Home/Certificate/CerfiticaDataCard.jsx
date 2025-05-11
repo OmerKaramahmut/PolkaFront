@@ -21,12 +21,11 @@ const CerfiticaDataCard = () => {
 
     const fetchCertificates = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/certificates?populate=*&locale=${locale}`);
+        const res = await axios.get(`${API_BASE_URL}/certificates?populate=CertificateImg&locale=${locale}`);
         const data = res.data?.data || [];
 
-        // Navbar yapısındaki gibi URL işlemesi burada yapılıyor
         const formattedData = data.map((item2) => {
-          const url = item2.CertificateImg?.url;
+          const url = item2?.CertificateImg?.url;
           const imageUrl = url ? `${BASE_URL}${url}` : "";
 
           return {

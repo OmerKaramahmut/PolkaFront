@@ -18,10 +18,9 @@ const ParallaxSection = () => {
         const fetchImage = async () => {
             try {
                 const res = await axios.get(`${API_BASE_URL}/parallax-img?populate=parallaxImage`);
-                const imagePath = res.data?.data?.attributes?.parallaxImage?.data?.attributes?.url;
-
-                if (imagePath) {
-                    setImageUrl(`${BASE_URL}${imagePath}`);
+                const url = res.data?.data?.parallaxImage?.url;
+                if (url) {
+                    setImageUrl(`${BASE_URL}${url}`);
                 } else {
                     console.error("Resim yolu bulunamadı.");
                 }

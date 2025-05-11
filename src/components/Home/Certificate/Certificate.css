@@ -50,7 +50,6 @@
 
 .card-title {
     position: relative;
-    transform: translateX(-100%);
     /* Soldan başlar */
     transition: transform 0.5s ease;
     font-size: 1.5rem;

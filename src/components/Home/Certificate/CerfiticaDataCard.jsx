@@ -8,9 +8,32 @@ import { useLanguage } from "../../../context/LanguageContext";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const CerfiticaDataCard = () => {
+const CertificateDataCard = () => {
   const [certificates, setCertificates] = useState([]);
   const { locale } = useLanguage();
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/certificates?populate=*&locale=${locale}`);
+        const formattedCertificates = res.data.data.map(item => {
+          const url = item.CertificateImg?.url;
+          const imageUrl = url ? `${BASE_URL}${url}` : "";
+          return {
+            id: item.id,
+            title: item.title,
+            text: item.text,
+            imageUrl,
+          };
+        });
+        setCertificates(formattedCertificates);
+      } catch (err) {
+        console.error('Strapi veri çekme hatası:', err);
+      }
+    };
+
+    fetchCertificates();
+  }, [locale]);
 
   useEffect(() => {
     AOS.init({
@@ -18,61 +41,39 @@ const CerfiticaDataCard = () => {
       easing: 'ease-out',
       once: false,
     });
+  }, []);
 
-    const fetchCertificates = async () => {
-      try {
-        const res = await axios.get(`${API_BASE_URL}/certificates?populate=CertificateImg&locale=${locale}`);
-        const data = res.data?.data || [];
-
-        const formattedData = data.map((item2) => {
-          const url = item2?.CertificateImg?.url;
-          const imageUrl = url ? `${BASE_URL}${url}` : "";
-
-          return {
-            id: item2.id,
-            imageUrl,
-            description: item2?.title || 'Başlık yok',
-            span: item2?.text || '',
-          };
-        });
-
-        setCertificates(formattedData);
-      } catch (err) {
-        console.error("Sertifika verileri alınamadı:", err);
-      }
-    };
-
-    fetchCertificates();
-  }, [locale]);
+  if (!certificates || certificates.length === 0) {
+    return <p>Veri yüklenemedi.</p>;
+  }
 
   return (
-    <div className="container py-5">
-      <div className="row g-4">
-        {certificates.map((item, index) => (
-          <div key={item.id} className="col-xl-3 col-md-6 col-sm-12">
-            <div
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-              data-aos-offset="200"
-              className="card h-100 border-0 shadow-sm card-hover position-relative overflow-hidden"
-            >
-              {item.imageUrl && (
-                <img
-                  src={item.imageUrl}
-                  className="card-img"
-                  alt={item.description}
-                />
-              )}
-              <div className="card-overlay">
-                <h5 style={{ color: "#7eb0da" }} className="card-title fw-bold">{item.description}</h5>
-                <p className="card-text">{item.span}</p>
+    <div className="row">
+      {certificates.map((card, index) => (
+        <div
+          className="d-flex justify-content-center col-12 col-md-6 col-lg-4 col-xl-3"
+          key={card.id}
+          data-aos="fade-up"
+          data-aos-delay={index * 100}
+          data-aos-offset="200"
+        >
+          <div className="cardBrand">
+            <div className="contentBrand">
+              <div className="imgBx">
+                {card.imageUrl && (
+                  <img className="img-fluid" src={card.imageUrl} alt={card.title} />
+                )}
+              </div>
+              <div className="contentBx">
+                <h3 className="fw-bold" style={{ color: "#7eb0da" }}>{card.title}</h3>
+                <span>{card.text}</span>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default CerfiticaDataCard;
+export default CertificateDataCard;

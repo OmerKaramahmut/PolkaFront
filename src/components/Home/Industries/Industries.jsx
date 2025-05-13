@@ -39,7 +39,7 @@ const Industries = () => {
           const IconComponent = MuiIcons[icon] || MuiIcons.HelpOutline;
 
           return (
-            <div key={id} className="col-12 col-xl-3 d-flex">
+            <div key={id} className="col-12 col-xl-4 d-flex">
               <div className="card bg-dark text-white border-0 mb-4 p-5 rounded-3 text-center d-flex flex-column align-items-center justify-content-center gap-3">
                 <IconComponent style={{ fontSize: 80, color: "#7eb0da" }} />
                 <h2>{title}</h2>

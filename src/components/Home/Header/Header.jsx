@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from '../../Button/Button';
 import { useLanguage } from '../../../context/LanguageContext';
-
+import { NavLink } from 'react-router-dom';
 // URL Tanımları
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -70,7 +70,9 @@ const Slider = () => {
           <div className="w-100 h-100 flex-column d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-center px-3">
             <h3 className="text-white fw-bold display-1">{slide.title}</h3>
             <p className="text-white fw-normal display-5">{slide.content}</p>
-            <Button />
+             <NavLink key={menu4.id} style={{ textDecoration: 'none' }} to='/products'}>
+               <Button />
+            </NavLink>
           </div>
         </div>
       ))}

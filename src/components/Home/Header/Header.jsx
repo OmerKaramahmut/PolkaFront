@@ -70,7 +70,7 @@ const Slider = () => {
           <div className="w-100 h-100 flex-column d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-center px-3">
             <h3 className="text-white fw-bold display-1">{slide.title}</h3>
             <p className="text-white fw-normal display-5">{slide.content}</p>
-             <NavLink key={menu4.id} style={{ textDecoration: 'none' }} to='/products'>
+             <NavLink style={{ textDecoration: 'none' }} to='/products'>
                <Button />
             </NavLink>
           </div>

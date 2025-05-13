@@ -77,7 +77,7 @@ const CardText = () => {
 
                 }}
             >
-                <Button />
+         
             </div>
         </div>
     );

@@ -31,7 +31,7 @@ const IndustriesTex = () => {
         <h1 style={{ color: "#7eb0da", fontSize: "50px", letterSpacing: "8px" }} className='fw-bold'>
           {industriesText.title}
         </h1>
-        <p>{industriesText.text}</p>
+        <p style={{ color: "#fff"}}>{industriesText.text}</p>
       </div>
     </div>
   );
